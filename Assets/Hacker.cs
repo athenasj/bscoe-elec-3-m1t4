@@ -8,22 +8,30 @@ public class Hacker : MonoBehaviour {
 
     int level;
 
-    enum Screen { Identify, MainMenu, Password, Win};
+    enum Screen { Identify, MainMenu, Item, Win };
 
     Screen currentScreen = Screen.Identify; //I added a new screen for "login"
 
     string person;
-    string [] weapon = { "arrow", "machete", "rifle", "sword", "pistol" };
-    string [] building = { "brothel", "cottage", "hospital", "library", "stadium" };
-    string[] automob = { "armored car","ambulance","convertible","limousine","motorcycle"};
+    string[] weapon = { "arrow", "machete", "rifle", "sword", "pistol" };
+    string[] building = { "brothel", "cottage", "hospital", "library", "stadium" };
+    string[] automob = { "armored car", "ambulance", "convertible", "limousine", "motorcycle" };
 
     int randNum;
-
+    int l1 = 0, l2 = 0, l3 = 0;
 
     // Use this for initialization
-    void Start () {
-        Terminal.WriteLine("You are on the verge of the apocalypse.");
-        Terminal.WriteLine("Zombies have overrun the world.");
+    void Start() {
+        Terminal.WriteLine("M1T4 - San Jose & Taña");
+        Terminal.WriteLine("You are on the verge of the apocalypse");
+        Terminal.WriteLine("    ________");
+        Terminal.WriteLine("   (  O   o )");
+        Terminal.WriteLine("   /    0   \\   Zombies have");
+        Terminal.WriteLine("  / /|    |\\ \\  overrun the world.");
+        Terminal.WriteLine(" (\")  |  |  (\")");
+        Terminal.WriteLine("      |  |      ");
+        Terminal.WriteLine("      /  \\      ");
+        Terminal.WriteLine("    _|    |_      ");
         Terminal.WriteLine("Identify yourself...");
     }
 
@@ -31,17 +39,24 @@ public class Hacker : MonoBehaviour {
     void ShowMainMenu()
     {
         currentScreen = Screen.MainMenu;
-        Terminal.WriteLine("SW2T4");
         Terminal.WriteLine("Figure out the words to attain a level of safety.");
         Terminal.WriteLine("\n" + "Press 1 for the weapons." + "\n" + "Press 2 for the building type." + "\n" + "Press 3 for the auto mobile." + "\n\n" + "Enter your selection:");
 
     }
 
+    //when user enters something
     void OnUserInput(string input)
     {
         if (currentScreen == Screen.Identify)
         {
             IdentifyScreen(input);
+        }
+        else if (l1 == 1 && l2 == 1 && l3 == 1 && currentScreen != Screen.Win)
+        {
+            l1 = 0;
+            l2 = 0;
+            l3 = 0;
+            FinishGame();
         }
         else if (input == "menu")
         {
@@ -53,15 +68,33 @@ public class Hacker : MonoBehaviour {
         {
             RunMainMenu(input);
         }
-        else if (currentScreen == Screen.Password)
+        else if (currentScreen == Screen.Item)
         {
             CheckAnswer(input);
         }
         else if (currentScreen == Screen.Win)
         {
+            Terminal.ClearScreen();
             Terminal.WriteLine("Hello, " + person + "!");
             ShowMainMenu();
         }
+    }
+
+    private void FinishGame()
+    {
+        currentScreen = Screen.Win;
+        Terminal.ClearScreen();
+        Terminal.WriteLine("    ________");
+        Terminal.WriteLine("   (  O   o )");
+        Terminal.WriteLine("   /    0   \\");
+        Terminal.WriteLine("  / /|    |\\ \\ Congratulations!");
+        Terminal.WriteLine(" (\")  |  |  (\") ");
+        Terminal.WriteLine("      |  |      ");
+        Terminal.WriteLine("      /  \\      ");
+        Terminal.WriteLine("    _|    |_      ");
+        Terminal.WriteLine("You survived the apocalypse!");
+        Terminal.WriteLine("Press 'Enter' to reset all levels.");
+
     }
 
     void IdentifyScreen(string input)
@@ -73,13 +106,36 @@ public class Hacker : MonoBehaviour {
             person = "Mr. Bond";
             ShowMainMenu();
         }
+        if (input == "daryl" || input == "carol")
+        {
+            DarylCarolMethod();
+            person = input;
+        }
         else
         {
             Terminal.ClearScreen();
             Terminal.WriteLine("Hello, " + input + "!");
-            person =input;
+            person = input;
             ShowMainMenu();
         }
+    }
+
+    private void DarylCarolMethod()
+    {
+        Terminal.ClearScreen();
+        currentScreen = Screen.Win;
+        Terminal.ClearScreen();
+        Terminal.WriteLine("    ________");
+        Terminal.WriteLine("   (  O   o )");
+        Terminal.WriteLine("   /    0   \\");
+        Terminal.WriteLine("  / /|    |\\ \\ INSTANT WIN!!!");
+        Terminal.WriteLine(" (\")  |  |  (\") ");
+        Terminal.WriteLine("      |  |      ");
+        Terminal.WriteLine("      /  \\      ");
+        Terminal.WriteLine("    _|    |_      ");
+        Terminal.WriteLine("You survived the zombie apocalypse.");
+        Terminal.WriteLine("Obviously...");
+        Terminal.WriteLine("Press 'Enter' to actually play the game.");
     }
 
     void RunMainMenu(string input)
@@ -111,11 +167,13 @@ public class Hacker : MonoBehaviour {
     void StartGame()
     {
         RandomNumber();
-        currentScreen = Screen.Password;
+        currentScreen = Screen.Item;
         Terminal.WriteLine("Level "+ level);
+
         if (level == 1)
         {
             Terminal.WriteLine("Weapon");
+            Terminal.WriteLine("PS: Answer all the levels to finish the game!");
             Terminal.WriteLine("Clue: " + StringExtension.Anagram(weapon[randNum]));
         }
         else if (level == 2)
@@ -137,21 +195,15 @@ public class Hacker : MonoBehaviour {
     {
         if (input == weapon[randNum] && level == 1)
         {
-            Terminal.ClearScreen();
-            Terminal.WriteLine("You now have a defense system!");
-            currentScreen = Screen.Win;
+            WeaponMethod();
         }
         else if (input == building[randNum] && level == 2)
         {
-            Terminal.ClearScreen();
-            Terminal.WriteLine("You now have shelter!");
-            currentScreen = Screen.Win;
+            BuildingMethod();
         }
         else if (input == automob[randNum] && level == 3)
         {
-            Terminal.ClearScreen();
-            Terminal.WriteLine("You now have a mobility!");
-            currentScreen = Screen.Win;
+            AutomobMethod();
         }
         else
         {
@@ -159,6 +211,49 @@ public class Hacker : MonoBehaviour {
             Terminal.WriteLine("Incorrect.");
             StartGame();
         }
+    }
+
+    private void AutomobMethod()
+    {
+        Terminal.ClearScreen();
+        currentScreen = Screen.Win;
+        l3 = 1;
+        Terminal.WriteLine("    _____   ");
+        Terminal.WriteLine("___/     \\___    Congratulations!");
+        Terminal.WriteLine("|__( )  ( )___|");
+        Terminal.WriteLine("\nYou now have mobility!");
+    }
+
+    private void BuildingMethod()
+    {
+        Terminal.ClearScreen();
+        l2 = 1;
+        Terminal.WriteLine("    ________");
+        Terminal.WriteLine("   (  O   o )");
+        Terminal.WriteLine("   /    0   \\   Congratulations!");
+        Terminal.WriteLine("  /          \\");
+        Terminal.WriteLine("  ~~~~~~~~~~~~~");
+        Terminal.WriteLine("\nYou now have shelter!");
+        currentScreen = Screen.Win;
+    }
+
+    private void WeaponMethod()
+    {
+        Terminal.ClearScreen();
+        l1 = 1;
+        currentScreen = Screen.Win;
+        Terminal.WriteLine("  \\*  *  *//   ");
+        Terminal.WriteLine("     / \\   ");
+        Terminal.WriteLine("    |   |   ");
+        Terminal.WriteLine("    | | |   ");
+        Terminal.WriteLine(" ___| | |___   Well done!");
+        Terminal.WriteLine(" | ~  O  ~ |  ");
+        Terminal.WriteLine(" | _______ |");
+        Terminal.WriteLine("    | + |   ");
+        Terminal.WriteLine("     | |   ");
+        Terminal.WriteLine("     |_|   ");
+        Terminal.WriteLine("You now have a defense system!");
+        
     }
 
     void RandomNumber()
