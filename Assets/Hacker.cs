@@ -19,6 +19,7 @@ public class Hacker : MonoBehaviour {
 
     int randNum;
     int l1 = 0, l2 = 0, l3 = 0;
+    int prevnum = 0;
 
     // Use this for initialization
     void Start() {
@@ -51,7 +52,7 @@ public class Hacker : MonoBehaviour {
         {
             IdentifyScreen(input);
         }
-        else if (l1 == 1 && l2 == 1 && l3 == 1 && currentScreen != Screen.Win)
+        else if (l1 == 1 && l2 == 1 && l3 == 1 && currentScreen == Screen.Win)
         {
             l1 = 0;
             l2 = 0;
@@ -99,6 +100,7 @@ public class Hacker : MonoBehaviour {
 
     void IdentifyScreen(string input)
     {
+        //easter egg number 1
         if (input == "007")
         {
             Terminal.ClearScreen();
@@ -119,7 +121,7 @@ public class Hacker : MonoBehaviour {
             ShowMainMenu();
         }
     }
-
+    //easter egg number 2
     private void DarylCarolMethod()
     {
         Terminal.ClearScreen();
@@ -135,7 +137,8 @@ public class Hacker : MonoBehaviour {
         Terminal.WriteLine("    _|    |_      ");
         Terminal.WriteLine("You survived the zombie apocalypse.");
         Terminal.WriteLine("Obviously...");
-        Terminal.WriteLine("Press 'Enter' to actually play the game.");
+        Terminal.WriteLine("");
+        Terminal.WriteLine("Press 'Enter' to really play the game.");
     }
 
     void RunMainMenu(string input)
@@ -173,7 +176,7 @@ public class Hacker : MonoBehaviour {
         if (level == 1)
         {
             Terminal.WriteLine("Weapon");
-            Terminal.WriteLine("PS: Answer all the levels to finish the game!");
+            Terminal.WriteLine("PS: Answer all the levels to finish thegame!");
             Terminal.WriteLine("Clue: " + StringExtension.Anagram(weapon[randNum]));
         }
         else if (level == 2)
@@ -258,7 +261,12 @@ public class Hacker : MonoBehaviour {
 
     void RandomNumber()
     {   //possible additional code is .length
-        randNum = UnityEngine.Random.Range(0,4);
+        randNum = UnityEngine.Random.Range(0, 4);
+        while (randNum == prevnum)
+        {
+            randNum = UnityEngine.Random.Range(0, 4);
+        }
+        prevnum = randNum;
     }
 
 }
